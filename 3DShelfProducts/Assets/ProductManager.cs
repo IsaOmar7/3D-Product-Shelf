@@ -21,7 +21,7 @@ public class Product
 public class ProductManager : MonoBehaviour
 {
 
-    public GameObject productPrefab; // Prefab for displaying each product on the shelf
+    public GameObject[] productPrefab; // Prefab for displaying each product on the shelf
     public Transform[] shelfSpots;   // Array of 3 shelf spots
 
     // References for the Product Details Canvas
@@ -37,6 +37,8 @@ public class ProductManager : MonoBehaviour
     public void OnShowProductsButtonClicked()
     {
         Debug.Log("Show Products Button Clicked");  // Log for button click
+
+
         StartCoroutine(FetchProductsFromServer());
     }
 
@@ -59,12 +61,13 @@ public class ProductManager : MonoBehaviour
 
     private void DisplayProductsOnShelf(List<Product> products)
     {
+        Debug.Log(products); 
         ClearShelf();
 
         for (int i = 0; i < products.Count && i < shelfSpots.Length; i++)
         {
             Product product = products[i];
-            GameObject productInstance = Instantiate(productPrefab, shelfSpots[i].position, shelfSpots[i].rotation);
+            GameObject productInstance = Instantiate(productPrefab[i], shelfSpots[i].position, shelfSpots[i].rotation);
             ProductDisplay display = productInstance.GetComponent<ProductDisplay>();
             display.Initialize(product, this);
         }
@@ -72,10 +75,13 @@ public class ProductManager : MonoBehaviour
 
     private void ClearShelf()
     {
+        Debug.Log("Clear Shelf Func");
         foreach (Transform spot in shelfSpots)
         {
+            Debug.Log("inside the first for");
             foreach (Transform child in spot)
             {
+                Debug.Log("inside the second for");
                 Destroy(child.gameObject);
             }
         }
@@ -85,6 +91,8 @@ public class ProductManager : MonoBehaviour
     public void ShowProductDetailsOnCanvas(Product product)
     {
         currentProduct = product;
+        Debug.Log(product);
+        Debug.Log(product.name);
 
         // Activate the Canvas and set input fields to current product details
         productDetailsCanvas.SetActive(true);

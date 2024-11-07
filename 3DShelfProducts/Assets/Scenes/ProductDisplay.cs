@@ -16,8 +16,7 @@ public class ProductDisplay : MonoBehaviour
         this.product = product;
         productManager = manager;
 
-        // Set display name on the prefab (optional)
-        productNameDisplay.text = product.name;
+        
     }
 
     // Detect clicks to show product details on the Canvas
