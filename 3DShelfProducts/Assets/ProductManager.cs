@@ -11,7 +11,7 @@ using TMPro;
 [System.Serializable]
 public class Product
 {
-    public string id;
+    public GameObject prefab;
     public string name;
     public string description;
     public float price;
@@ -42,6 +42,40 @@ public class ProductManager : MonoBehaviour
         StartCoroutine(FetchProductsFromServer());
     }
 
+    public void OnSubmitButtonClicked()
+    {
+        // Display a message indicating that the fields have changed
+        Debug.Log("Product details updated!");
+
+        // Show a confirmation message to the user
+        StartCoroutine(ShowConfirmationMessage("Product details updated!"));
+    }
+
+    private IEnumerator ShowConfirmationMessage(string message)
+    {
+        // Create a temporary TextMeshProUGUI for the confirmation message
+        GameObject messageObject = new GameObject("ConfirmationMessage");
+        TextMeshProUGUI messageText = messageObject.AddComponent<TextMeshProUGUI>();
+
+        // Set the message text and style
+        messageText.text = message;
+        messageText.fontSize = 24; // Set font size
+        messageText.alignment = TextAlignmentOptions.Center; // Center the text
+        messageText.color = Color.green; // Set text color
+
+        // Set the RectTransform properties
+        RectTransform rectTransform = messageObject.GetComponent<RectTransform>();
+        rectTransform.SetParent(productDetailsCanvas.transform); // Set parent to the Canvas
+        rectTransform.localPosition = new Vector3(0, -50, 0); // Position it below the input fields
+        rectTransform.sizeDelta = new Vector2(200, 50); // Set size
+
+        // Show the message for a few seconds
+        yield return new WaitForSeconds(2f);
+
+        // Destroy the message object
+        Destroy(messageObject);
+    }
+
     private IEnumerator FetchProductsFromServer()
     {
         UnityWebRequest request = UnityWebRequest.Get(serverUrl);
@@ -67,7 +101,7 @@ public class ProductManager : MonoBehaviour
         for (int i = 0; i < products.Count && i < shelfSpots.Length; i++)
         {
             Product product = products[i];
-            GameObject productInstance = Instantiate(productPrefab[i], shelfSpots[i].position, shelfSpots[i].rotation);
+            GameObject productInstance = Instantiate(productPrefab[i], shelfSpots[i].position, shelfSpots[i].rotation, shelfSpots[i]);
             ProductDisplay display = productInstance.GetComponent<ProductDisplay>();
             display.Initialize(product, this);
         }
@@ -79,6 +113,7 @@ public class ProductManager : MonoBehaviour
         foreach (Transform spot in shelfSpots)
         {
             Debug.Log("inside the first for");
+            Debug.Log(spot);
             foreach (Transform child in spot)
             {
                 Debug.Log("inside the second for");
