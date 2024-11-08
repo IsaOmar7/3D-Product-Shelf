@@ -101,7 +101,11 @@ public class ProductManager : MonoBehaviour
         for (int i = 0; i < products.Count && i < shelfSpots.Length; i++)
         {
             Product product = products[i];
-            GameObject productInstance = Instantiate(productPrefab[i], shelfSpots[i].position, shelfSpots[i].rotation, shelfSpots[i]);
+            string[] parts = product.name.Split(' ');
+            string productNumber = parts.Length > 1 ? parts[1] : "0";
+            int prefabIndex = int.Parse(productNumber);
+            GameObject productInstance = Instantiate(productPrefab[prefabIndex-1], shelfSpots[i].position, shelfSpots[i].rotation, shelfSpots[i]);
+            productInstance.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
             ProductDisplay display = productInstance.GetComponent<ProductDisplay>();
             display.Initialize(product, this);
         }
