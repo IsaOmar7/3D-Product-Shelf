@@ -27,7 +27,7 @@ public class ProductManager : MonoBehaviour
     // References for the Product Details Canvas
     public GameObject productDetailsCanvas;
     public TMP_InputField productNameInputField;
-    public TMP_InputField productDescriptionInputField;
+    public TextMeshProUGUI productDescriptionText;
     public TMP_InputField productPriceInputField;
 
     private string serverUrl = "https://homework.mocart.io/api/products";
@@ -132,12 +132,11 @@ public class ProductManager : MonoBehaviour
         // Activate the Canvas and set input fields to current product details
         productDetailsCanvas.SetActive(true);
         productNameInputField.text = product.name;
-        productDescriptionInputField.text = product.description;
+        productDescriptionText.text = currentProduct.description;
         productPriceInputField.text = product.price.ToString("F2");
 
         // Add listeners to save changes
         productNameInputField.onEndEdit.AddListener(UpdateProductName);
-        productDescriptionInputField.onEndEdit.AddListener(UpdateProductDescription);
         productPriceInputField.onEndEdit.AddListener(UpdateProductPrice);
     }
 
