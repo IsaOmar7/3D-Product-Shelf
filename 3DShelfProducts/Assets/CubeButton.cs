@@ -5,6 +5,7 @@ using UnityEngine;
 public class CubeButton : MonoBehaviour
 {
     public ProductManager productManager;
+    public CanvasManager canvasManager;
 
     private void OnMouseDown()
     {
@@ -12,6 +13,8 @@ public class CubeButton : MonoBehaviour
         if (productManager != null)
         {
             productManager.OnShowProductsButtonClicked();
+            canvasManager.ShowProductDetailsCanvas();
+           
         }
         else
         {
