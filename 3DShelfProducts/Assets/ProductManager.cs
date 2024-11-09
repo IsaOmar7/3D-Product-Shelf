@@ -26,6 +26,7 @@ public class ProductManager : MonoBehaviour
 
     // References for the Product Details Canvas
     public GameObject productDetailsCanvas;
+    public GameObject submitChangesCanvas;
     public TMP_InputField productNameInputField;
     public TextMeshProUGUI productDescriptionText;
     public TMP_InputField productPriceInputField;
@@ -33,6 +34,10 @@ public class ProductManager : MonoBehaviour
     private string serverUrl = "https://homework.mocart.io/api/products";
     private Product currentProduct;  // The product being displayed on the Canvas
 
+    void Start()
+    {
+        submitChangesCanvas.SetActive(false);
+    }
 
     public void OnShowProductsButtonClicked()
     {
@@ -48,32 +53,20 @@ public class ProductManager : MonoBehaviour
         Debug.Log("Product details updated!");
 
         // Show a confirmation message to the user
-        StartCoroutine(ShowConfirmationMessage("Product details updated!"));
+        StartCoroutine(ShowConfirmationMessage());
     }
 
-    private IEnumerator ShowConfirmationMessage(string message)
+    private IEnumerator ShowConfirmationMessage()
     {
-        // Create a temporary TextMeshProUGUI for the confirmation message
-        GameObject messageObject = new GameObject("ConfirmationMessage");
-        TextMeshProUGUI messageText = messageObject.AddComponent<TextMeshProUGUI>();
-
-        // Set the message text and style
-        messageText.text = message;
-        messageText.fontSize = 24; // Set font size
-        messageText.alignment = TextAlignmentOptions.Center; // Center the text
-        messageText.color = Color.green; // Set text color
-
-        // Set the RectTransform properties
-        RectTransform rectTransform = messageObject.GetComponent<RectTransform>();
-        rectTransform.SetParent(productDetailsCanvas.transform); // Set parent to the Canvas
-        rectTransform.localPosition = new Vector3(0, -50, 0); // Position it below the input fields
-        rectTransform.sizeDelta = new Vector2(200, 50); // Set size
+        productDetailsCanvas.SetActive(false);
+        submitChangesCanvas.SetActive(true);
 
         // Show the message for a few seconds
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(3f);
 
-        // Destroy the message object
-        Destroy(messageObject);
+       
+        submitChangesCanvas.SetActive(false);
+        productDetailsCanvas.SetActive(true);
     }
 
     private IEnumerator FetchProductsFromServer()
@@ -105,9 +98,14 @@ public class ProductManager : MonoBehaviour
             string productNumber = parts.Length > 1 ? parts[1] : "0";
             int prefabIndex = int.Parse(productNumber);
             GameObject productInstance = Instantiate(productPrefab[prefabIndex-1], shelfSpots[i].position, shelfSpots[i].rotation, shelfSpots[i]);
+            shelfSpots[i].GetComponent<Light>().color = Color.green;
             productInstance.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
             ProductDisplay display = productInstance.GetComponent<ProductDisplay>();
             display.Initialize(product, this);
+        }
+        for (int i = products.Count; i < 3 && i < shelfSpots.Length; i++)
+        {
+            shelfSpots[i].GetComponent<Light>().color = Color.red;
         }
     }
 
@@ -147,11 +145,13 @@ public class ProductManager : MonoBehaviour
     private void UpdateProductName(string newName)
     {
         currentProduct.name = newName;
+        OnSubmitButtonClicked();
     }
 
     private void UpdateProductDescription(string newDescription)
     {
         currentProduct.description = newDescription;
+        OnSubmitButtonClicked();
     }
 
     private void UpdateProductPrice(string newPrice)
@@ -159,6 +159,7 @@ public class ProductManager : MonoBehaviour
         if (float.TryParse(newPrice, out float price))
         {
             currentProduct.price = price;
+            OnSubmitButtonClicked();
         }
     }
 
