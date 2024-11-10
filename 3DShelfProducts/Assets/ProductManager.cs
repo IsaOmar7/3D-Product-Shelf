@@ -127,7 +127,9 @@ public class ProductManager : MonoBehaviour
             foreach (Transform child in spot)
             {
                 Debug.Log("inside the second for");
+                
                 Destroy(child.gameObject);
+
             }
         }
     }

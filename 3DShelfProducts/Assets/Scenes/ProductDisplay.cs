@@ -9,7 +9,12 @@ public class ProductDisplay : MonoBehaviour
 
     private Product product;
     private ProductManager productManager;
+    private AudioSource audioSource;
 
+    void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
     void Update()
     {
         transform.Rotate(Vector3.up * 10f * Time.deltaTime);
@@ -22,12 +27,13 @@ public class ProductDisplay : MonoBehaviour
         this.product = product;
         productManager = manager;
 
-        
     }
 
     // Detect clicks to show product details on the Canvas
     private void OnMouseDown()
     {
         productManager.ShowProductDetailsOnCanvas(product);
+        audioSource.enabled=true;
+        audioSource.Play();
     }
 }

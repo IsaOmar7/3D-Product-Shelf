@@ -16,7 +16,6 @@ public class CubeButton : MonoBehaviour
             canvasManager.ShowProductDetailsCanvas();
             animator.SetTrigger("PlayStarAnimation");
 
-
         }
         else
         {
