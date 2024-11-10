@@ -35,6 +35,11 @@ Used for high-quality text rendering in UI elements and 3D text displays. TMP pr
 - Unity Asset Store Assets:
 Some visual and audio assets were sourced from the Unity Asset Store to enhance the project's environment, animations, and audio effects. These assets were selected to maintain visual consistency and improve user interaction quality.
 
+in this section I used: 
+   - Server Room asset
+   - Planets of the solar system
+   - Science Shelf
+
 - Unity Standard Assets:
 Unity Standard Assets used for standard elements like basic animations, character controllers, or effects were incorporated. **I used Third Person Controller and Target Following Camera**.
 
