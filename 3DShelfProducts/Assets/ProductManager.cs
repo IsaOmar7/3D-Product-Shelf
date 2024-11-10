@@ -36,6 +36,14 @@ public class ProductManager : MonoBehaviour
 
     void Start()
     {
+        if (SystemInfo.graphicsMemorySize < 2000)
+        { // Low-end device
+            QualitySettings.SetQualityLevel(0); // Low quality setting
+        }
+        else
+        {
+            QualitySettings.SetQualityLevel(2); // High quality setting
+        }
         submitChangesCanvas.SetActive(false);
     }
 

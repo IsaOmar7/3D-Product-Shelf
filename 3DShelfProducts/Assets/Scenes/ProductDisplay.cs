@@ -10,6 +10,12 @@ public class ProductDisplay : MonoBehaviour
     private Product product;
     private ProductManager productManager;
 
+    void Update()
+    {
+        transform.Rotate(Vector3.up * 10f * Time.deltaTime);
+        float scale = Mathf.PingPong(Time.time * 0.01f, 0.1f - 0.05f) + 0.05f;
+        transform.localScale = new Vector3(scale, scale, scale);
+    }
     // Initialize with product data and manager reference
     public void Initialize(Product product, ProductManager manager)
     {

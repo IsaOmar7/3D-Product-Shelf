@@ -6,7 +6,7 @@ public class CubeButton : MonoBehaviour
 {
     public ProductManager productManager;
     public CanvasManager canvasManager;
-
+    public Animator animator;
     private void OnMouseDown()
     {
         // Check if ProductManager is assigned
@@ -14,7 +14,9 @@ public class CubeButton : MonoBehaviour
         {
             productManager.OnShowProductsButtonClicked();
             canvasManager.ShowProductDetailsCanvas();
-           
+            animator.SetTrigger("PlayStarAnimation");
+
+
         }
         else
         {
